@@ -1,0 +1,21 @@
+{
+  "scripts": {
+    "build:typescript": "tsc",
+    "run:node": "node build/index.js",
+    "dev": "nodemon --watch src/ -e ts --exec ts-node src/index.ts",
+    "run": "npm run build:typescript && npm run run:node",
+    "watch": "-tsc -w",
+    "lint": "eslint src/**/**/*.ts",
+    "lint-fix": "eslint src/**/**/*.ts --fix"
+  },
+  "dependencies": {
+    "discord.js": "^14.6.0",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3",
+    "typescript": "^4.8.4"
+  }
+}
