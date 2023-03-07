@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="290px" height="290px" viewBox="0 0 290 290" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>group-icon</title>
+    <defs>
+        <linearGradient x1="31.3599146%" y1="13.439121%" x2="68.5464355%" y2="87.2603222%" id="linearGradient-1">
+            <stop stop-color="#F7424A" offset="0%"></stop>
+            <stop stop-color="#551A6A" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="group-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="owddm" transform="translate(20.500000, 0.000000)">
+            <polygon id="hex" fill="url(#linearGradient-1)" points="124.5 0 249 72.5 249 217.5 124.5 290 1.62921148e-14 217.5 0 72.5"></polygon>
+            <polygon id="slash" fill="#FFFFFF" points="142.309187 103.853731 157.019189 103.853731 109.790969 186.560259 95.080967 186.560259"></polygon>
+            <polyline id="arrow-left" fill="#FFFFFF" points="42.1045263 140.071418 84.5283829 121.633324 84.5283829 133.839291 54.8965382 145.079377 54.8965382 145.251081 84.5283829 156.491168 84.5283829 168.697134 42.1045263 150.25904"></polyline>
+            <polyline id="arrow-right" fill="#FFFFFF" transform="translate(185.639672, 145.251081) scale(-1, 1) translate(-185.639672, -145.251081) " points="164.427743 140.15727 206.8516 121.719176 206.8516 133.925143 177.219755 145.165229 177.219755 145.336933 206.8516 156.57702 206.8516 168.782986 164.427743 150.344892"></polyline>
+        </g>
+    </g>
+</svg>

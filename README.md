@@ -1,6 +1,6 @@
 # OWDDM/KWDDM Discord Server Bot
 
-![logo](public/group-icon.png)
+![logo](public/group-icon.svg)
 
 Text and moderation bot for the Osaka and Kyoto Web Developers and Designers Meetup Discord Server
 
