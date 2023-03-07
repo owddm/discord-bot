@@ -1,4 +1,4 @@
-import Logger, {CommandDefinition } from "../lib";
+import Logger, { CommandDefinition } from "../lib";
 import { cowsay } from './memes/cowsay';
 
 export const commands: CommandDefinition[] = [

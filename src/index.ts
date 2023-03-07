@@ -1,7 +1,7 @@
-import {Client, Partials } from 'discord.js';
+import { Client, Partials } from 'discord.js';
 import dotenv from 'dotenv';
-import Logger, { createCommand} from './lib';
-import {commands} from './commands/index';
+import Logger, { createCommand } from './lib';
+import { commands } from './commands/index';
 
 dotenv.config();
 
