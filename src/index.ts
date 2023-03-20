@@ -1,5 +1,6 @@
 import { Client, Partials } from 'discord.js';
 import dotenv from 'dotenv';
+import { Octokit } from 'octokit';
 import Logger, { createCommand } from './lib';
 import { commands } from './commands/index';
 
@@ -26,6 +27,10 @@ export const client = new Client({
         Partials.User,
     ],
 });
+
+export const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN
+})
 
 client.login(process.env.DISCORD_TOKEN)
     .then()

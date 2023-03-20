@@ -1,8 +1,10 @@
 import Logger, { CommandDefinition } from "../lib";
 import { cowsay } from './memes/cowsay';
+import { github } from "./general/github";
 
 export const commands: CommandDefinition[] = [
     cowsay,
+    github,
 ]
 
 const commandsObject: { [k: string]: CommandDefinition } = {};
