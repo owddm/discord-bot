@@ -1,6 +1,6 @@
 import { CommandCategory, ResponseType } from '../constants';
 import { ChatInputCommandInteraction, PermissionsBitField,
-   RESTPostAPIChatInputApplicationCommandsJSONBody } from 'discord.js'
+	RESTPostAPIChatInputApplicationCommandsJSONBody } from 'discord.js';
 import { InputCommandOptions } from './CommandOptions';
 
 export type APIPost = RESTPostAPIChatInputApplicationCommandsJSONBody;
