@@ -1,4 +1,4 @@
-import Logger, { CommandDefinition, InputCommandOptions } from '../../lib';
+import Logger, { CommandDefinition, makeEmbed, InputCommandOptions } from '../../lib';
 import { CommandCategory, ResponseType } from '../../constants';
 import { openai_api } from '../../index';
 import { ErrorEvent } from 'discord.js';
@@ -17,14 +17,21 @@ export const chatgpt: CommandDefinition = {
 	interaction: async (interaction) => {
 
 		const input = interaction.options.getString('input') ?? 'no text provided';
+        await interaction.deferReply();
         try {
-        const response = await openai_api.createChatCompletion({
-            model: 'gpt-4',
-            messages: [{role: 'assistant', content: input}]  
-	    });
 
+            const response = await openai_api.createChatCompletion({
+                model: 'gpt-3.5-turbo',
+                messages: [{role: 'user', content: input}]  
+            });
 
-        await interaction.reply('response: ' + response.data.choices[0].message)
+            const reponseEmbed = makeEmbed({
+                title: `${input}`,
+                description: response.data.choices[0].message?.content,
+                url: 'https://openai.com',
+            });
+
+            await interaction.followUp({embeds: [reponseEmbed]});
     } catch (error) {
         Logger.error(error)
         await interaction.reply('error: ' + error)

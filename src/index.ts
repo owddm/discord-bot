@@ -49,22 +49,6 @@ client.on('ready', async() => {
     console.log(`Logged in as ${client.user.username}`)
     }
 
-    
-    try {
-        const response = await openai_api.createChatCompletion({
-            model: 'text-davinci-002',
-            messages: [{role: 'assistant', content: 'hello'}]
-        });
-    Logger.info(response.data.choices[0].message);
-    } catch (error) {
-        Logger.error(error);
-    }
-
-    for (const command of commands) {
-        const slashCommand = createCommand(command);
-        client.application?.commands.create(slashCommand);
-    }
-
 });
 
 client.on('interactionCreate', async (interaction: any) => {
