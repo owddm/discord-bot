@@ -9,7 +9,7 @@
     ],
     "overrides": [
     ],
-    "parser": "@typescript-eslint/parser",
+    "parser": "@taypescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module"
