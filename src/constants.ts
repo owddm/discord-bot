@@ -16,7 +16,7 @@ export enum ResponseType {
 
 export enum Channels {
 	GITHUB = '429734269838032898',
-    GENERAL = '1088405733650989187'
+    GENERAL = '957878337424994344'
 }
 
 export const guildId = '429734269838032896'
