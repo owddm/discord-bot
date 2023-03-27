@@ -2,6 +2,7 @@ import { Client, Partials } from 'discord.js';
 import dotenv from 'dotenv';
 import Logger, { createCommand } from './lib';
 import { commands } from './commands/index';
+import { Configuration, OpenAIApi } from 'openai';
 
 dotenv.config();
 
@@ -24,8 +25,15 @@ export const client = new Client({
         Partials.GuildMember,
         Partials.Reaction,
         Partials.User,
-    ],
+    ]
 });
+
+export const openai_api: OpenAIApi = new OpenAIApi(new Configuration({
+    organization: `${process.env.OPENAI_ORG}`,
+    apiKey: `${process.env.OPENAI_TOKEN}`,
+}));
+
+
 
 client.login(process.env.DISCORD_TOKEN)
     .then()
@@ -34,11 +42,22 @@ client.login(process.env.DISCORD_TOKEN)
         process.exit(1);
     });
 
-client.on('ready', () => {
+client.on('ready', async() => {
     if(client.user == null) {
         console.log('error, client not found');
     } else {
     console.log(`Logged in as ${client.user.username}`)
+    }
+
+    
+    try {
+        const response = await openai_api.createChatCompletion({
+            model: 'text-davinci-002',
+            messages: [{role: 'assistant', content: 'hello'}]
+        });
+    Logger.info(response.data.choices[0].message);
+    } catch (error) {
+        Logger.error(error);
     }
 
     for (const command of commands) {
