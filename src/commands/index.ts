@@ -4,7 +4,7 @@ import { chatgpt } from "./general/chatgpt";
 
 export const commands: CommandDefinition[] = [
     cowsay,
-    chatgpt
+    chatgpt,
 ]
 
 const commandsObject: { [k: string]: CommandDefinition } = {};
