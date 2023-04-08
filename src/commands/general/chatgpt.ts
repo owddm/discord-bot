@@ -21,10 +21,7 @@ export const chatgpt: CommandDefinition = {
         try {
 
             const response = await openai_api.createChatCompletion({
-                prompt: input,
-                n: 4,
-                size: '512x512',
-                response_format: "b64_json",
+                message: [{role:'user', content: input}],
             });
 
 
