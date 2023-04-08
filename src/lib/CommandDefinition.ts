@@ -11,7 +11,7 @@ export interface CommandDefinition {
    permissions?: PermissionsBitField,
    category: CommandCategory,
    response: ResponseType,
-   options?: InputCommandOptions,
+   options?: InputCommandOptions[],
    interaction: (interaction: ChatInputCommandInteraction) =>  Promise<any>
 }
 

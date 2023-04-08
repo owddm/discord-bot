@@ -1,7 +1,9 @@
-import { Client, Partials } from 'discord.js';
+import { Client, Partials, REST  } from 'discord.js';
+import { Routes } from 'discord-api-types/v9';
 import dotenv from 'dotenv';
 import Logger, { createCommand } from './lib';
 import { commands } from './commands/index';
+import { Configuration, OpenAIApi } from 'openai';
 
 dotenv.config();
 
@@ -24,8 +26,13 @@ export const client = new Client({
         Partials.GuildMember,
         Partials.Reaction,
         Partials.User,
-    ],
+    ]
 });
+
+export const openai_api: OpenAIApi = new OpenAIApi(new Configuration({
+    organization: `${process.env.OPENAI_ORG}`,
+    apiKey: `${process.env.OPENAI_TOKEN}`,
+}));
 
 client.login(process.env.DISCORD_TOKEN)
     .then()
@@ -34,17 +41,32 @@ client.login(process.env.DISCORD_TOKEN)
         process.exit(1);
     });
 
-client.on('ready', () => {
+client.on('ready', async() => {
     if(client.user == null) {
         console.log('error, client not found');
     } else {
     console.log(`Logged in as ${client.user.username}`)
     }
 
+    try {
+        const existingCommands = await client.application?.commands.fetch()!;
+        for (const existingCommand of existingCommands.values()) {
+            const commandExists = commands.find((cmd) => cmd.name.includes(existingCommand.name));
+            if (!commandExists) {
+                await client.application?.commands.delete(existingCommand.id);
+                Logger.info(`Deleted old command: ${existingCommand.name}`);
+            }
+        }
+    } catch (error) {
+        Logger.error(`Failed to delete old commands: ${error}`);
+    }
+
     for (const command of commands) {
         const slashCommand = createCommand(command);
         client.application?.commands.create(slashCommand);
+        Logger.info(`Created command ${slashCommand.name}!`)
     }
+
 
 });
 

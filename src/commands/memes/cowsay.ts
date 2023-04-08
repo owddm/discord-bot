@@ -2,10 +2,10 @@ import { CommandDefinition, InputCommandOptions } from '../../lib';
 import { CommandCategory, ResponseType } from '../../constants';
 import { say } from 'cowsay';
 
-const cowsayOptions: InputCommandOptions = {
+const cowsayOptions: InputCommandOptions[] = [{
 	name: 'cowsay',
 	description: 'what?'
-};
+}];
 
 export const cowsay: CommandDefinition = {
 	name: 'cowsay',
