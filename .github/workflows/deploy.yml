@@ -18,7 +18,7 @@ jobs:
         echo "${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.DEPLOY_SSH_HOST }} > ~/.ssh/known_hosts
     - name: connect and pull
-      run: ssh ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SSH_HOST }} "cd ${{ secrets.DEPLOY_WORK_DIR }} && git checkout ${{ secrets.DEPLOY_MAIN_BRANCH }} && git pull && exit"
+      run: ssh ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SSH_HOST }} "cd ${{ secrets.DEPLOY_WORK_DIR }} && git reset --hard && git checkout ${{ secrets.DEPLOY_MAIN_BRANCH }} && git pull && exit"
     - name: execute post tasks
       run: ssh ${{ secrets.DEPLOY_SSH_USER }}@${{ secrets.DEPLOY_SSH_HOST }} "cd ${{ secrets.DEPLOY_WORK_DIR }} && cd ../. && ./deploy_post.sh && exit"
     - name: cleanup
