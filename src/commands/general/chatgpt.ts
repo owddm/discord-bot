@@ -21,6 +21,7 @@ export const chatgpt: CommandDefinition = {
         try {
 
             const response = await openai_api.createChatCompletion({
+                model: 'gpt-3.5-turbo',
                 messages: [{role:'user', content: input}],
             });
 
