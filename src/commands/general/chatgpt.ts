@@ -32,7 +32,7 @@ export const chatgpt: CommandDefinition = {
                 url: 'https://openai.com',
             });
 
-            await interaction.reply({embeds: [reponseEmbed]});
+            await interaction.followUp({embeds: [reponseEmbed]});
 
         } catch (error) {
             Logger.error(error)
