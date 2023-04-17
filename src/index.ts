@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 import Logger, { createCommand } from './lib';
 import { commands } from './commands/index';
 import { Configuration, OpenAIApi } from 'openai';
-import { MessageID } from './constants'
 import { roleAdd, roleRemove } from "./handlers/role";
 import { roleMessageID } from './commands/general/role_assignment';
 
