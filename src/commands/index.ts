@@ -1,10 +1,12 @@
 import Logger, { CommandDefinition } from "../lib";
 import { cowsay } from './memes/cowsay';
 import { chatgpt } from "./general/chatgpt";
+import { roleSelect } from './general/role_assignment';
 
 export const commands: CommandDefinition[] = [
     cowsay,
     chatgpt,
+    roleSelect,
 ]
 
 const commandsObject: { [k: string]: CommandDefinition } = {};

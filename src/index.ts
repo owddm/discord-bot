@@ -73,7 +73,11 @@ client.on('ready', async() => {
 });
 
 client.on('messageReactionAdd', async (reaction, user) => {
-  if(reaction.message.author?.bot && !user.bot) {
+    const roleMessageId = '1097516560161198100'
+    if(user.bot || reaction.message.id !== roleMessageId) return;
+    if(reaction.message.author?.bot && !user.bot) {
+
+
       const volunterRole = 'Volunteer'
 
       const role = reaction.message.guild?.roles.cache.find(r => r.name === volunterRole);
@@ -85,7 +89,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
       const member = reaction.message.guild?.members.cache.find(m => m.id === user.id);
 
-      await member?.roles.add(volunterRole)
+      await member?.roles.add(role);
   }
 });
 

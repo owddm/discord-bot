@@ -1,6 +1,6 @@
 import {CommandDefinition} from "../../lib";
 import {CommandCategory, ResponseType} from "../../constants";
-import {CacheType, ChatInputCommandInteraction, MessageActionRowComponentBuilder} from 'discord.js';
+import {Emoji, Message} from 'discord.js';
 
 export const roleSelect: CommandDefinition = {
     name: 'roles',
@@ -9,6 +9,11 @@ export const roleSelect: CommandDefinition = {
     response: ResponseType.STATIC,
 
     interaction: async (interaction) => {
-        await interaction.reply('test');
+       const message =  await interaction.reply({
+            content: 'select a role',
+            fetchReply: true,
+        });
+
+        await message.react(message.client.emojis.cache.get('875215256190873621')!);
     }
 }
