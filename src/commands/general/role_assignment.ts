@@ -1,6 +1,6 @@
-import {CommandDefinition} from "../../lib";
-import {CommandCategory, ResponseType} from "../../constants";
-import {Emoji, Message} from 'discord.js';
+import {makeEmbed, CommandDefinition, makeLines} from "../../lib";
+import { CommandCategory, ResponseType } from "../../constants";
+import { EmbedBuilder } from "discord.js";
 
 export const roleSelect: CommandDefinition = {
     name: 'roles',
@@ -9,11 +9,22 @@ export const roleSelect: CommandDefinition = {
     response: ResponseType.STATIC,
 
     interaction: async (interaction) => {
-       const message =  await interaction.reply({
-            content: 'select a role',
-            fetchReply: true,
-        });
 
-        await message.react(message.client.emojis.cache.get('875215256190873621')!);
+        const roleEmbed = new EmbedBuilder()
+            .setTitle('Select a role')
+            .setDescription(makeLines([
+                'React to this message to add a role to yourself',
+                '',
+                'React again to remove the role',
+                '',
+                '🛠: Volunteer',
+            ]))
+
+        await interaction.reply({
+            embeds: [roleEmbed],
+            fetchReply: true,
+        }).then((message) => {
+            message.react('🛠');
+        });
     }
 }

@@ -1,10 +1,10 @@
-import { Client, Partials, REST  } from 'discord.js';
-import { Routes } from 'discord-api-types/v9';
+import { Client, Partials, ClientEvents } from 'discord.js';
 import dotenv from 'dotenv';
 import Logger, { createCommand } from './lib';
 import { commands } from './commands/index';
 import { Configuration, OpenAIApi } from 'openai';
-import * as Events from "events";
+import { MessageID } from './constants'
+import { roleAdd, roleRemove } from "./handlers/role";
 
 dotenv.config();
 
@@ -73,24 +73,19 @@ client.on('ready', async() => {
 });
 
 client.on('messageReactionAdd', async (reaction, user) => {
-    const roleMessageId = '1097516560161198100'
+    const roleMessageId = MessageID.ROLE_SELECT;
     if(user.bot || reaction.message.id !== roleMessageId) return;
-    if(reaction.message.author?.bot && !user.bot) {
+    if(reaction.message.id == roleMessageId) {
+        await roleAdd(reaction, user);
+    }
+});
 
-
-      const volunterRole = 'Volunteer'
-
-      const role = reaction.message.guild?.roles.cache.find(r => r.name === volunterRole);
-
-      if(!role) {
-          Logger.error('volunteer role not found');
-          return;
-      }
-
-      const member = reaction.message.guild?.members.cache.find(m => m.id === user.id);
-
-      await member?.roles.add(role);
-  }
+client.on('messageReactionRemove', async (reaction, user) => {
+    const roleMessageId = MessageID.ROLE_SELECT;
+    if(user.bot || reaction.message.id !== roleMessageId) return;
+    if(reaction.message.id == roleMessageId) {
+        await roleRemove(reaction, user);
+    }
 });
 
 client.on('interactionCreate', async (interaction: any) => {
