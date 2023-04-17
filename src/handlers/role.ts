@@ -1,7 +1,6 @@
 import Logger from "../lib";
 import {MessageReaction, PartialMessageReaction, PartialUser, User} from "discord.js";
 
-
 // future: use roles map to match reaction to role
 const roles = new Map([
     ['🛠', 'Volunteer'],

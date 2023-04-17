@@ -24,7 +24,3 @@ export const enum OpenAIModels {
     TEXT_DAVINCI_EDIT = 'text-davinci-edit-001',
     CODE_DAVINCI_EDIT = 'code-davinci-edit-001',
 }
-
-export const enum MessageID {
-    ROLE_SELECT = '1097532966835605605',
-}

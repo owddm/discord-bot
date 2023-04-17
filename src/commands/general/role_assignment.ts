@@ -2,6 +2,9 @@ import {makeEmbed, CommandDefinition, makeLines} from "../../lib";
 import { CommandCategory, ResponseType } from "../../constants";
 import { EmbedBuilder } from "discord.js";
 
+
+export let roleMessageID: string;
+
 export const roleSelect: CommandDefinition = {
     name: 'roles',
     description: 'Creates a messages for users to react & add roles from',
@@ -25,6 +28,7 @@ export const roleSelect: CommandDefinition = {
             fetchReply: true,
         }).then((message) => {
             message.react('🛠');
+            roleMessageID = message.id;
         });
     }
 }

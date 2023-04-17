@@ -5,6 +5,8 @@ import { commands } from './commands/index';
 import { Configuration, OpenAIApi } from 'openai';
 import { MessageID } from './constants'
 import { roleAdd, roleRemove } from "./handlers/role";
+import { roleMessageID } from './commands/general/role_assignment';
+
 
 dotenv.config();
 
@@ -73,17 +75,16 @@ client.on('ready', async() => {
 });
 
 client.on('messageReactionAdd', async (reaction, user) => {
-    const roleMessageId = MessageID.ROLE_SELECT;
-    if(user.bot || reaction.message.id !== roleMessageId) return;
-    if(reaction.message.id == roleMessageId) {
+
+    if(user.bot || reaction.message.id !== roleMessageID) return;
+    if(reaction.message.id == roleMessageID) {
         await roleAdd(reaction, user);
     }
 });
 
 client.on('messageReactionRemove', async (reaction, user) => {
-    const roleMessageId = MessageID.ROLE_SELECT;
-    if(user.bot || reaction.message.id !== roleMessageId) return;
-    if(reaction.message.id == roleMessageId) {
+    if(user.bot || reaction.message.id !== roleMessageID) return;
+    if(reaction.message.id == roleMessageID) {
         await roleRemove(reaction, user);
     }
 });
