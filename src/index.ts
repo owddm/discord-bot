@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import Logger, { createCommand } from './lib';
 import { commands } from './commands/index';
 import { Configuration, OpenAIApi } from 'openai';
+import * as Events from "events";
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ export const client = new Client({
         Partials.GuildMember,
         Partials.Reaction,
         Partials.User,
+        Partials.ThreadMember,
     ]
 });
 
@@ -68,6 +70,23 @@ client.on('ready', async() => {
     }
 
 
+});
+
+client.on('messageReactionAdd', async (reaction, user) => {
+  if(reaction.message.author?.bot && !user.bot) {
+      const volunterRole = 'Volunteer'
+
+      const role = reaction.message.guild?.roles.cache.find(r => r.name === volunterRole);
+
+      if(!role) {
+          Logger.error('volunteer role not found');
+          return;
+      }
+
+      const member = reaction.message.guild?.members.cache.find(m => m.id === user.id);
+
+      await member?.roles.add(volunterRole)
+  }
 });
 
 client.on('interactionCreate', async (interaction: any) => {
