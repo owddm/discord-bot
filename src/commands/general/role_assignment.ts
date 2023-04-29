@@ -7,13 +7,17 @@ import {
     ButtonStyle,
     ActionRow,
     RoleSelectMenuBuilder,
-    Role, StringSelectMenuOptionBuilder, StringSelectMenuComponent, StringSelectMenuBuilder, PermissionsBitField
+    Role,
+    StringSelectMenuOptionBuilder,
+    StringSelectMenuComponent,
+    PermissionsBitField,
+    SelectMenuBuilder
 } from "discord.js";
 import {client} from "../../index";
 
-const getEmojiId = (emoji: string) => {
-    return client.emojis.resolveId(emoji);
-}
+// const getEmojiId = (emoji: string) => {
+//     return client.emojis.resolveId(emoji) ?? 'error no emoji found';
+// }
 
 export const roleSelect: CommandDefinition = {
     name: 'roles',
@@ -23,6 +27,7 @@ export const roleSelect: CommandDefinition = {
     response: ResponseType.STATIC,
 
     interaction: async (interaction, user) => {
+
         const regionEmbed = new EmbedBuilder()
             .setTitle('Select a role')
             .setDescription(makeLines([
@@ -51,61 +56,82 @@ export const roleSelect: CommandDefinition = {
                 '',
             ]))
 
-        const createOption = (label: string, emoji: string): StringSelectMenuOptionBuilder => {
+        const createOption = (label: string): StringSelectMenuOptionBuilder => {
             return new StringSelectMenuOptionBuilder()
                 .setLabel(label)
-                .setEmoji(emoji)
+                // .setEmoji(emoji)
         }
 
         // map all the roles to the buttons and add them to the row
 
-        const regionButtons = regionRole.map((region) => {
-            return createOption(region, getEmojiId(region))
+        const regionButtons = regionRole.forEach((region) => {
+            return createOption(region)
         });
 
         const webLangButtons = webLangRoles.map((lang) => {
-            return createOption(lang, getEmojiId(lang))
+            return createOption(lang)
         });
 
         const systemsLangButtons = systemsLangRoles.map((lang) => {
-            return createOption(lang, getEmojiId(lang))
+            return createOption(lang)
         });
 
         const frameworksButtons = frameworksAndLibraries.map((name) => {
-            return createOption(name, getEmojiId(name))
+            return createOption(name)
         });
 
-        const regionRow = new ActionRowBuilder<StringSelectMenuBuilder>()
-            .addComponents(regionButtons)
+       const regionMenu =
+           new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+               new StringSelectMenuBuilder()
+               .setOptions(regionButtons)
+               .setCustomId('region')
+               .setPlaceholder('Select a region')
+           )
 
-        const webLangRow = new ActionRowBuilder<StringSelectMenuBuilder>()
-            .addComponents(webLangButtons)
+        const webLangMenu =
+            new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+                new StringSelectMenuBuilder()
+                .setOptions(webLangButtons)
+                .setCustomId('reg ')
+                .setPlaceholder('Select a web lang')
+            )
 
-        const systemsLangRow = new ActionRowBuilder<StringSelectMenuBuilder>()
-            .addComponents(systemsLangButtons)
+        const systemsLangMenu =
+            new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+                new StringSelectMenuBuilder()
+                .setOptions(systemsLangButtons)
+                .setCustomId('regin')
+                .setPlaceholder('Select a systems lang')
+            )
 
-        const frameworksRow = new ActionRowBuilder<StringSelectMenuBuilder>()
-            .addComponents(frameworksButtons)
-
-
-        // await interaction.reply({
-        //     embeds: [regionEmbed],
-        //     components: [regionRow]
-        // });
-        //
-        // await interaction.followUp({
-        //     embeds: [webLangEmbed],
-        //     components: [webLangRow]
-        // });
-        //
-        // await interaction.followUp({
-        //     embeds: [systemsLangEmbed],
-        //     components: [systemsLangRow]
-        // });
+        const frameworksMenu =
+            new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+                new StringSelectMenuBuilder()
+                .setOptions(frameworksButtons)
+                .setCustomId('rion')
+                .setPlaceholder('Select a framework or library')
+            )
 
         await interaction.reply({
+            embeds: [regionEmbed],
+            components: [regionMenu]
+        }).then(async () => {
+            client.emit('roleSelect', interaction, user)
+        });
+
+        await interaction.followUp({
+            embeds: [webLangEmbed],
+            components: [webLangMenu]
+        });
+
+        await interaction.followUp({
+            embeds: [systemsLangEmbed],
+            components: [systemsLangMenu]
+        });
+
+        await interaction.followUp({
             embeds: [frameworksEmbed],
-            components: [frameworksRow, systemsLangRow]
+            components: [frameworksMenu]
         });
     }
 }
@@ -119,6 +145,7 @@ const regionRole = [
     'Nagoya',
     'Aichi',
 ]
+
 const webLangRoles = [
     'ts',
     'js',
