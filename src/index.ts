@@ -1,11 +1,11 @@
-import { Client, Partials, ClientEvents } from 'discord.js';
+import { Client, Partials } from 'discord.js';
 import dotenv from 'dotenv';
 import Logger, { createCommand } from './lib';
 import { commands } from './commands/index';
 import { Configuration, OpenAIApi } from 'openai';
 import { roleAdd, roleRemove } from "./handlers/role";
-import { roleMessageID } from './commands/general/role_assignment';
-
+import { roleSelect } from './commands/general/role_assignment';
+import { Channels } from './constants';
 
 dotenv.config();
 
@@ -44,6 +44,16 @@ client.login(process.env.DISCORD_TOKEN)
         process.exit(1);
     });
 
+client.on('interactionCreate', async (interaction) => {
+  if (!interaction.isButton() || interaction.channelId !== Channels.ROLE_SELECT) return;
+  if (interaction.user.bot) {
+      Logger.info('Bailing due to bot interaction')
+      return;
+  }
+
+
+});
+
 client.on('ready', async() => {
     if(client.user == null) {
         console.log('error, client not found');
@@ -71,21 +81,6 @@ client.on('ready', async() => {
     }
 
 
-});
-
-client.on('messageReactionAdd', async (reaction, user) => {
-
-    if(user.bot || reaction.message.id !== roleMessageID) return;
-    if(reaction.message.id == roleMessageID) {
-        await roleAdd(reaction, user);
-    }
-});
-
-client.on('messageReactionRemove', async (reaction, user) => {
-    if(user.bot || reaction.message.id !== roleMessageID) return;
-    if(reaction.message.id == roleMessageID) {
-        await roleRemove(reaction, user);
-    }
 });
 
 client.on('interactionCreate', async (interaction: any) => {
