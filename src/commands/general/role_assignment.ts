@@ -7,17 +7,42 @@ import {
     ButtonStyle,
     ActionRow,
     RoleSelectMenuBuilder,
-    Role,
-    StringSelectMenuOptionBuilder,
-    StringSelectMenuComponent,
     PermissionsBitField,
-    SelectMenuBuilder
+    RoleManager,
+    ButtonBuilder,
+    Role,
+    GuildEmoji,
+    AttachmentBuilder,
+    ContextMenuCommandBuilder,
+    Message,
 } from "discord.js";
 import {client} from "../../index";
+import { Roles } from "../../constants";
 
 // const getEmojiId = (emoji: string) => {
 //     return client.emojis.resolveId(emoji) ?? 'error no emoji found';
 // }
+const createRoleButton = (role: string): ButtonBuilder => {
+
+    const emoji = client.emojis.cache.find(emoji => emoji.name?.toLowerCase() === role.toLowerCase());
+    console.log(emoji?.id)
+    return new ButtonBuilder()
+        .setCustomId(role)
+        .setLabel(role)
+        .setStyle(ButtonStyle.Primary)
+        .setEmoji(emoji ? emoji.id : '1098273705743884379')
+}
+const generateActionRows = (roles: string[], rolesPerRow = 5): ActionRowBuilder<ButtonBuilder>[] => {
+    const actionRows: ActionRowBuilder<ButtonBuilder>[] = [];
+    for (let i = 0; i < roles.length; i += rolesPerRow) {
+        const row = new ActionRowBuilder<ButtonBuilder>();
+        for (let j = i; j < i + rolesPerRow && j < roles.length; j++) {
+            row.addComponents(createRoleButton(roles[j]));
+        }
+        actionRows.push(row);
+    }
+    return actionRows;
+};
 
 export const roleSelect: CommandDefinition = {
     name: 'roles',
@@ -26,127 +51,96 @@ export const roleSelect: CommandDefinition = {
     category: CommandCategory.GENERAL,
     response: ResponseType.STATIC,
 
-    interaction: async (interaction, user) => {
-
+    interaction: async (interaction) => {
         const regionEmbed = new EmbedBuilder()
-            .setTitle('Select a role')
-            .setDescription(makeLines([
-                'Select a regional role from the menu',
-                '',
-            ]))
+            .setTitle('🗾 Where in Japan are you based?')
+            .setDescription('Select an item from the dropdown menu to select a region role')
 
-        const webLangEmbed = new EmbedBuilder()
-            .setTitle('Select a role')
-            .setDescription(makeLines([
-                'Select a web language role from the menu',
-                '',
-            ]))
+        const techEmbed = new EmbedBuilder()
+            .setTitle('💻 What technologies do you use?')
+            .setDescription('Select an item from the dropdown menu to select a tech role')
+            .addFields()
 
-        const systemsLangEmbed = new EmbedBuilder()
-            .setTitle('Select a role')
-            .setDescription(makeLines([
-                'Select a systems language role from the menu',
-                '',
-            ]))
+        const regionSelectMenu = new StringSelectMenuBuilder()
+            .setCustomId('region')
+            .setPlaceholder('Select a region')
+            .setMaxValues(1)
+            .addOptions(regionRoles.map(role => {
+                const emoji = client.emojis.cache.find(emoji => emoji.name?.toLowerCase() === role.toLowerCase());
+                return {
+                    label: role,
+                    value: role,
+                    emoji: emoji?.id ?? '1098273705743884379',
+                }
+            }))
 
-        const frameworksEmbed = new EmbedBuilder()
-            .setTitle('Select a role')
-            .setDescription(makeLines([
-                'Select a framework or library role from the menu',
-                '',
-            ]))
+        const techSelectMenu = new StringSelectMenuBuilder()
+            .setCustomId('tech')
+            .setPlaceholder('Select a tech')
+            .addOptions(techRoles.map(role => {
+                const emoji = client.emojis.cache.find(emoji => emoji.name?.toLowerCase() === role.toLowerCase());
+                return {
+                    label: role,
+                    value: role,
+                    emoji: emoji?.id ?? '1098273705743884379',
+                }
+            }))
 
-        const createOption = (label: string): StringSelectMenuOptionBuilder => {
-            return new StringSelectMenuOptionBuilder()
-                .setLabel(label)
-                // .setEmoji(emoji)
-        }
+        await interaction.channel?.send({
+            embeds: [regionEmbed],
+            components: [
+                new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(regionSelectMenu),
+            ],
+        })
 
-        // map all the roles to the buttons and add them to the row
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
-        const regionButtons = regionRole.forEach((region) => {
-            return createOption(region)
-        });
-
-        const webLangButtons = webLangRoles.map((lang) => {
-            return createOption(lang)
-        });
-
-        const systemsLangButtons = systemsLangRoles.map((lang) => {
-            return createOption(lang)
-        });
-
-        const frameworksButtons = frameworksAndLibraries.map((name) => {
-            return createOption(name)
-        });
-
-       const regionMenu =
-           new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-               new StringSelectMenuBuilder()
-               .setOptions(regionButtons)
-               .setCustomId('region')
-               .setPlaceholder('Select a region')
-           )
-
-        const webLangMenu =
-            new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-                new StringSelectMenuBuilder()
-                .setOptions(webLangButtons)
-                .setCustomId('reg ')
-                .setPlaceholder('Select a web lang')
-            )
-
-        const systemsLangMenu =
-            new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-                new StringSelectMenuBuilder()
-                .setOptions(systemsLangButtons)
-                .setCustomId('regin')
-                .setPlaceholder('Select a systems lang')
-            )
-
-        const frameworksMenu =
-            new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-                new StringSelectMenuBuilder()
-                .setOptions(frameworksButtons)
-                .setCustomId('rion')
-                .setPlaceholder('Select a framework or library')
-            )
+        await interaction.channel?.send({
+            embeds: [techEmbed],
+            components: [
+                new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(techSelectMenu),
+            ],
+        })
 
         await interaction.reply({
-            embeds: [regionEmbed],
-            components: [regionMenu]
-        }).then(async () => {
-            client.emit('roleSelect', interaction, user)
-        });
+            content: 'Success!',
+            ephemeral: true,
+        })
 
-        await interaction.followUp({
-            embeds: [webLangEmbed],
-            components: [webLangMenu]
-        });
 
-        await interaction.followUp({
-            embeds: [systemsLangEmbed],
-            components: [systemsLangMenu]
-        });
+        // const embed = new EmbedBuilder()
+        //     .setTitle('Role Assignment')
+        //     .setDescription('Rep your region and favorite technologies by selecting the roles below!')
+        //     .setColor('#00ff00')
+        //
+        // const actionRows = generateActionRows(roles)
+        //
+        // await interaction.reply({
+        //     embeds: [embed],
+        //     components: [actionRows[0]],
+        // })
+        //
+        // for (let i = 1; i < actionRows.length; i++) {
+        //     await interaction.followUp({
+        //         components: [actionRows[i]],
+        //     });
+        // }
 
-        await interaction.followUp({
-            embeds: [frameworksEmbed],
-            components: [frameworksMenu]
-        });
+
+
     }
 }
 
-
-const regionRole = [
+const regionRoles = [
     'Osaka',
     'Kyoto',
     'Kobe',
     'Tokyo',
-    'Nagoya',
     'Aichi',
+    'Abroad'
 ]
 
-const webLangRoles = [
+const techRoles = [
     'ts',
     'js',
     'csharp',
@@ -157,16 +151,10 @@ const webLangRoles = [
     'html',
     'css',
     'ruby',
-]
-
-const systemsLangRoles = [
-    'Rust',
-    'c_',
+    'rust',
+    'c',
     'cpp',
     'python',
-]
-
-const frameworksAndLibraries = [
     'react',
     'angular',
     'svelte',
