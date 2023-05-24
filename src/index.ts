@@ -1,9 +1,11 @@
-import { Client, Partials, REST  } from 'discord.js';
-import { Routes } from 'discord-api-types/v9';
+import {Client, Partials, Colors, CacheType, Interaction} from 'discord.js';
 import dotenv from 'dotenv';
 import Logger, { createCommand } from './lib';
 import { commands } from './commands/index';
 import { Configuration, OpenAIApi } from 'openai';
+import { roleHandler } from "./handlers/role";
+import { roleSelect } from './commands/general/role_assignment';
+import { Channels } from './constants';
 
 dotenv.config();
 
@@ -26,6 +28,7 @@ export const client = new Client({
         Partials.GuildMember,
         Partials.Reaction,
         Partials.User,
+        Partials.ThreadMember,
     ]
 });
 
@@ -71,7 +74,6 @@ client.on('ready', async() => {
 });
 
 client.on('interactionCreate', async (interaction: any) => {
-    if (!interaction.isCommand()) return;
 
     if(!interaction.guild) {
         Logger.error('bailing because interaction in DM');
@@ -80,6 +82,10 @@ client.on('interactionCreate', async (interaction: any) => {
 
     if(interaction.user.bot) {
         Logger.error('Bailing due to bot message');
+    }
+
+    if (interaction.isStringSelectMenu()) {
+        await roleHandler(interaction)
     }
 
     for(const command of commands) {
