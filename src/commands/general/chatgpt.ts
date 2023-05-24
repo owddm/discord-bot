@@ -51,7 +51,7 @@ export const chatgpt: CommandDefinition = {
                     text: 'https://openai.com',
                 }
             })
-
+            
             await interaction.followUp({embeds: [responseEmbed]});
 
         } catch (error) {
