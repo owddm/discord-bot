@@ -6,8 +6,8 @@ import {
     StringSelectMenuBuilder,
     Colors
 } from 'discord.js';
-import { regionEmbed, techEmbed, createMenu } from '../commands/general/role_assignment';
-import { regionRoles, techRoles } from '../constants';
+import { regionEmbed, techEmbed, createMenu } from '../commands/moderation/role_assignment';
+import { regionRoles, techRoles, Channels } from '../constants';
 
 const errorEmbed = new EmbedBuilder({
     title: 'Error',
@@ -16,6 +16,10 @@ const errorEmbed = new EmbedBuilder({
 })
 
 export const roleHandler = async (interaction: any) => {
+    if(interaction.channel.id !== Channels.ROLE_SELECT) {
+        return;
+    }
+
     const regionSelectMenu = createMenu(
         'regionRole',
         'Select a region',

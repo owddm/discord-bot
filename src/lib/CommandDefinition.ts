@@ -1,7 +1,7 @@
-import { CommandCategory, ResponseType, Roles } from '../constants';
+import { CommandCategory, ResponseType } from '../constants';
 import {
-   ChatInputCommandInteraction, Message, PartialUser, PermissionsBitField,
-   RESTPostAPIChatInputApplicationCommandsJSONBody, User
+   ChatInputCommandInteraction, PartialUser,
+   RESTPostAPIChatInputApplicationCommandsJSONBody, User, PermissionsString
 } from 'discord.js'
 import { InputCommandOptions } from './CommandOptions';
 
@@ -10,7 +10,7 @@ export type APIPost = RESTPostAPIChatInputApplicationCommandsJSONBody;
 export interface CommandDefinition {
    name: string,
    description: string,
-   permissions?: bigint | PermissionsBitField,
+   requiredPermissions?: PermissionsString[],
    category: CommandCategory,
    response: ResponseType,
    options?: InputCommandOptions[],

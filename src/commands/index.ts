@@ -1,7 +1,7 @@
 import Logger, { CommandDefinition } from "../lib";
 import { cowsay } from './memes/cowsay';
 import { chatgpt } from "./general/chatgpt";
-import { roleSelect } from './general/role_assignment';
+import { roleSelect } from './moderation/role_assignment';
 
 export const commands: CommandDefinition[] = [
     cowsay,
