@@ -1,9 +1,9 @@
-import { Client, Partials } from 'discord.js';
+import {Client, Partials, Colors, CacheType, Interaction} from 'discord.js';
 import dotenv from 'dotenv';
 import Logger, { createCommand } from './lib';
 import { commands } from './commands/index';
 import { Configuration, OpenAIApi } from 'openai';
-import { roleAdd, roleRemove } from "./handlers/role";
+import { roleHandler } from "./handlers/role";
 import { roleSelect } from './commands/general/role_assignment';
 import { Channels } from './constants';
 
@@ -44,16 +44,6 @@ client.login(process.env.DISCORD_TOKEN)
         process.exit(1);
     });
 
-client.on('interactionCreate', async (interaction) => {
-  if (!interaction.isButton() || interaction.channelId !== Channels.ROLE_SELECT) return;
-  if (interaction.user.bot) {
-      Logger.info('Bailing due to bot interaction')
-      return;
-  }
-
-
-});
-
 client.on('ready', async() => {
     if(client.user == null) {
         console.log('error, client not found');
@@ -84,7 +74,6 @@ client.on('ready', async() => {
 });
 
 client.on('interactionCreate', async (interaction: any) => {
-    if (!interaction.isCommand()) return;
 
     if(!interaction.guild) {
         Logger.error('bailing because interaction in DM');
@@ -93,6 +82,10 @@ client.on('interactionCreate', async (interaction: any) => {
 
     if(interaction.user.bot) {
         Logger.error('Bailing due to bot message');
+    }
+
+    if (interaction.isStringSelectMenu()) {
+        await roleHandler(interaction)
     }
 
     for(const command of commands) {
