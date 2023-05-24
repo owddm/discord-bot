@@ -1,10 +1,10 @@
 import {Client, Partials, Colors, CacheType, Interaction} from 'discord.js';
 import dotenv from 'dotenv';
-import Logger, { createCommand } from './lib';
+import Logger, {createCommand, makeLines} from './lib';
 import { commands } from './commands/index';
 import { Configuration, OpenAIApi } from 'openai';
 import { roleHandler } from "./handlers/role";
-import { roleSelect } from './commands/general/role_assignment';
+import { roleSelect } from './commands/moderation/role_assignment';
 import { Channels } from './constants';
 
 dotenv.config();
@@ -88,13 +88,34 @@ client.on('interactionCreate', async (interaction: any) => {
         await roleHandler(interaction)
     }
 
+
+
     for(const command of commands) {
         if (interaction.commandName == command.name) {
             if(command.interaction == undefined) {
                 Logger.error(`Error: ${command.name} has no interaction`);
                 break;
             }
-                await command.interaction(interaction)
+
+            if(command.requiredPermissions) {
+                // ignore if user doesn't have permissions
+                if(!interaction.member.permissions.has(command.requiredPermissions)) {
+                    interaction.reply({
+                        content: makeLines([
+                            `you do not have sufficient permissions to use this command.`,
+                            '',
+                            `(missing: ${command.requiredPermissions.join(', ')})`
+                        ]),
+                        ephemeral: true
+                    });
+                    Logger.info(`User ${interaction.member.user.username} doesn't have permissions to run ${command.name}`)
+                    return;
+                }
+            }
+
+            Logger.info(`Running command ${command.name}`)
+            await command.interaction(interaction)
+
         }
     }
 });

@@ -1,5 +1,5 @@
-# April 2023
-- feat: (04/18/2023): Add new role handler & command
+# May 2023
+- feat: (05/25/2023): Add new role handler, update gpt command, changelog
 
 # March 2023
 - feat: (03/07/2023): Integrate slash command api & new cowsay command

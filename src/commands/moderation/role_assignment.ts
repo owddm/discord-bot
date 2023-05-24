@@ -45,8 +45,8 @@ export const createMenu = (
 export const roleSelect: CommandDefinition = {
     name: 'roles',
     description: 'Creates a messages for users to react & add roles from',
-    permissions: PermissionsBitField.Flags.BanMembers,
-    category: CommandCategory.GENERAL,
+    requiredPermissions: ['BanMembers'],
+    category: CommandCategory.MODERATION,
     response: ResponseType.STATIC,
 
     interaction: async (interaction) => {
