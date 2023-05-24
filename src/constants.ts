@@ -7,8 +7,13 @@ export const enum CommandCategory {
 }
 
 export const enum Channels {
+    // production server
     ROLE_SELECT = '1110938547705356308',
+
+    // test server
+    // ROLE_SELECT = '1098248714314842142'
 }
+
 
 export const enum ResponseType {
     STATIC,

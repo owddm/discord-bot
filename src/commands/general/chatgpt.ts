@@ -1,8 +1,7 @@
 import Logger, {CommandDefinition, makeEmbed, InputCommandOptions, makeLines} from '../../lib';
 import { CommandCategory, ResponseType } from '../../constants';
 import { openai_api } from '../../index';
-import {imagesFromBase64Response} from "../../lib/openai";
-import {EmbedBuilder} from "discord.js";
+import { EmbedBuilder, Colors } from "discord.js";
 
 const chatgptOptions: InputCommandOptions[] = [{
     name: 'prompt',
@@ -21,12 +20,14 @@ export const chatgpt: CommandDefinition = {
         const maxChars = 300;
         if(input.length > maxChars) {
             const overMaxEmbed = new EmbedBuilder({
-                title: '🚫 Error: Too many characters',
+                title: '🚫 Error: Character Limit Exceeded',
                 description: makeLines([
                     `Please provide a prompt less than ${maxChars} characters long.`,
                     `You provided ${input.length} characters.`,
-                    `For prompts longer than the maximum, please visit https://chat.openai.com/`
-                ])
+                    '',
+                    `For prompts longer than the maximum, please visit https://chat.openai.com`
+                ]),
+                color: Colors.Red,
             })
             await interaction.reply({
                 embeds: [overMaxEmbed],
