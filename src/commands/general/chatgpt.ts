@@ -44,14 +44,14 @@ export const chatgpt: CommandDefinition = {
                 messages: [{role:'user', content: input}],
             });
 
-            const responseEmbed = new EmbedBuilder({
+            const responseEmbed = makeEmbed({
                 title: input,
                 description: response.data.choices[0].message?.content,
                 footer: {
-                    text: 'https://openai.com',
+                    text: 'Model provided by OpenAI',
                 }
             })
-            
+
             await interaction.followUp({embeds: [responseEmbed]});
 
         } catch (error) {
