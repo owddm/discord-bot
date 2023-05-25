@@ -1,4 +1,4 @@
-import Logger from '../lib';
+import Logger, {makeEmbed} from '../lib';
 import {
     ActionRowBuilder,
     EmbedBuilder,
@@ -9,7 +9,7 @@ import {
 import { regionEmbed, techEmbed, createMenu } from '../commands/moderation/role_assignment';
 import { regionRoles, techRoles, Channels } from '../constants';
 
-const errorEmbed = new EmbedBuilder({
+const errorEmbed = makeEmbed({
     title: 'Error',
     description: 'Please wait for the interaction to finish before re-selecting',
     color: Colors.Red,

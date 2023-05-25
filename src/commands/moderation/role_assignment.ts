@@ -5,15 +5,15 @@ import {
     PermissionsBitField, Message,
 } from 'discord.js';
 import { client } from '../../index';
-import { CommandDefinition } from '../../lib';
+import {CommandDefinition, makeEmbed} from '../../lib';
 import { CommandCategory, ResponseType, techRoles, regionRoles } from '../../constants';
 
-export const regionEmbed = new EmbedBuilder({
+export const regionEmbed = makeEmbed({
     title: '🗾 Where in Japan are you based?',
     description: 'Select an item from the dropdown menu to select a region role'
 }).toJSON()
 
-export const techEmbed = new EmbedBuilder({
+export const techEmbed = makeEmbed({
     title: '💻 What technologies do you use?',
     description: 'Select an item from the dropdown menu to select a tech role'
 }).toJSON()
