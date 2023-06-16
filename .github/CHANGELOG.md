@@ -1,3 +1,6 @@
+# June 2023
+- feat: (06/16/2023): Add repo link command
+
 # May 2023
 - feat: (05/25/2023): Add new role handler, update gpt command, changelog
 - fix: (05/26/2023): Fix permissions loophole in 'roles' command
