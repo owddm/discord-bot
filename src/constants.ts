@@ -33,34 +33,34 @@ export const enum Roles {
 }
 
 export const regionRoles = [
-    'Osaka',
-    'Kyoto',
-    'Kobe',
-    'Tokyo',
-    'Aichi',
-    'Abroad'
-]
+	'Osaka',
+	'Kyoto',
+	'Kobe',
+	'Tokyo',
+	'Aichi',
+	'Abroad'
+];
 
 export const techRoles = [
-    'typescript',
-    'javascript',
-    'csharp',
-    'java',
-    'kotlin',
-    'php',
-    'dart',
-    'html',
-    'css',
-    'ruby',
-    'rust',
-    'clang',
-    'cpp',
-    'python',
-    'react',
-    'angular',
-    'svelte',
-    'dotnet',
-    'flutter',
-    'vue',
-    'solidjs',
-]
+	'typescript',
+	'javascript',
+	'csharp',
+	'java',
+	'kotlin',
+	'php',
+	'dart',
+	'html',
+	'css',
+	'ruby',
+	'rust',
+	'clang',
+	'cpp',
+	'python',
+	'react',
+	'angular',
+	'svelte',
+	'dotnet',
+	'flutter',
+	'vue',
+	'solidjs',
+];
